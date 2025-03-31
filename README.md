@@ -8,13 +8,6 @@ Bearbeitung des AWS-Tutorials [1]
 ## Umsetzung
 
 
-AWS configure zum setzten:
-
-kacper@kacper-Lenovo-Legion-5-15IMH05H:~/Desktop/SYT_1031_EK/learn-terraform-aws-instance$ aws configure
-AWS Access Key ID [****************Q4FR]: 
-AWS Secret Access Key [****************m4Cm]: 
-Default region name [eu-north-1]: 
-Default output format [None]: aws_instance.web[*].public_ipS
 
 
 ### EKv - Automatisiertes Deployment von drei virtuellen Maschinen in AWS
@@ -30,34 +23,38 @@ Default output format [None]: aws_instance.web[*].public_ipS
     → Erstellen eines Zugriffsschlüssels (Access Key + Secret Key)  
     → [IAM-Zugriffsschlüssel generieren](https://docs.aws.amazon.com/de_de/IAM/latest/UserGuide/id_credentials_access-keys.html)
 - *Terraform lokal installieren* → Anleitung: Terraform Install Guide
-- *AWS CLI (optional)* → Nützlich für Tests oder direkten Zugriff auf die AWS API
+- *AWS CLI* → Nützlich für Tests oder direkten Zugriff auf die AWS API (mit aws configure alles ohne im Code zu bearbeiten erstellen.)
+
+
+#### AWS configure zum setzten:
+
+```bash
+aws configure
+```
+Folgendes sollte rauskommen(und entsprechend gesetzt werden, bei region und output kann man einfach leer lassen.):
+AWS Access Key ID [**]: 
+AWS Secret Access Key [**]: 
+Default region name [None]: 
+Default output format [None]:
 
 ### Projektstruktur
 ```css
 learn-terraform-aws-instance/
 │
-├── provider.tf
 ├── variables.tf
 ├── main.tf
 ├── outputs.tf
-
 ```
-- **provider.tf**
-Definiert, *wo* die Infrastruktur erstellt wird.  
-    - Terraform benötigt diese Informationen, um sich mit dem richtigen Cloud-Anbieter und Benutzer zu verbinden.  
-→ In diesem Fall: AWS, Region *eu-central-1* (Frankfurt).
 
-- **variables.tf**
-Hier werden *Variablen* definiert (z. B. Anzahl der VMs, Typ, Betriebssystem).  
-    - Variablen ermöglichen Wiederverwendbarkeit und Anpassbarkeit, ohne den Code direkt ändern zu müssen.
+**variables.tf**
+- Hier werden *Variablen* definiert (z. B. Anzahl der VMs, Typ, Betriebssystem).  
+Variablen ermöglichen Wiederverwendbarkeit und Anpassbarkeit, ohne den Code direkt ändern zu müssen.
 
-- **main.tf**
-Definiert, *welche Ressourcen* konkret erstellt werden.  
-     - Beispiel: „Erstelle count = 3 EC2-Instanzen mit einer bestimmten AMI-ID (z. B. Ubuntu) und einer definierten Größe (z. B. t2.micro).“
+**main.tf**
+- Die main.tf ist die zentrale Terraform-Datei, die die Infrastruktur definiert. Sie enthält Provider-Konfigurationen, Ressourcen und Variablen zur automatisierten Bereitstellung von Cloud-Ressourcen.
 
-- **outputs.tf**
-Hier werden am Ende wichtige Informationen wie die IP-Adressen der erstellten Server ausgegeben.  
-    - Ermöglicht z. B. die automatische Anzeige von SSH-Verbindungsdetails oder URLs zur weiteren Nutzung.
+**outputs.tf**
+- definiert die Ausgaben von Terraform, um wichtige Informationen über bereitgestellte Ressourcen anzuzeigen. Sie kann Werte wie öffentliche IP-Adressen, Instanz-IDs oder Verbindungs-URLs enthalten, die nach der Bereitstellung leicht abrufbar sind.
 
 ### Wichtige Terraform-Befehle
 
@@ -67,8 +64,9 @@ Hier werden am Ende wichtige Informationen wie die IP-Adressen der erstellten Se
 - terraform destroy → Löscht alle erstellten Ressourcen.
 
 ### Konfiguration in AWS
-Unter *IAM > Users > "xyz"-Benutzer*  
-- Dem Benutzer die *AmazonEC2FullAccess*-Berechtigung zuweisen.
+Unter  IAM/Security credentials
+- Access Keys bearbeiten und eins für die Instanzierung erstellen:
+![alt text](image.png)
 
 ## Bewertung
 
